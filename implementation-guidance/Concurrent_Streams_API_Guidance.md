@@ -36,7 +36,7 @@ Concurrent Streams API provides a standardized way for authorized subscribers to
 
 The API is intended to help advertising systems:
 
-- understand current live audience scale
+- understand current live event scale
 - prepare for and respond to QPS spikes
 - scale regional infrastructure
 - adjust bidding and pacing behavior
@@ -190,8 +190,8 @@ Consumers should use Concurrent Streams signals to:
 - scale QPS capacity
 - adjust bid throttles
 - modify pacing assumptions
-- avoid rejecting valuable live-event bid opportunities due to capacity limits
-- detect audience spikes or declines
+- avoid rejecting live-event bid opportunities due to capacity limits
+- detect spikes or declines in number of streams
 - protect user experience by reducing latency-sensitive failures
 
 ## Example Response
