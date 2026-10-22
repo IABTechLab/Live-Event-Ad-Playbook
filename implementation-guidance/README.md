@@ -29,7 +29,7 @@ The guidance is organized into a shared API conventions document, API-specific i
 
 ### Common API Conventions Reference
 
-**File:** `Common_API_Guidance.md`
+**File:** [`Common_API_Guidance.md`](https://github.com/IABTechLab/Live-Event-Ad-Protocols/blob/develop/implementation-guidance/Common_API_Guidance.md)
 
 This document defines common implementation conventions that apply across LEAP APIs unless an API-specific guide states otherwise.
 
@@ -54,7 +54,7 @@ API-specific guides should not repeat this common guidance unless they need to c
 
 ### Forecast API Guidance
 
-**File:** `Forecast_API_Guidance.md`
+**File:** [`Forecast_API_Guidance.md`](https://github.com/IABTechLab/Live-Event-Ad-Protocols/blob/develop/implementation-guidance/Forecast_API_Guidance.md)
 
 This document provides implementation guidance specific to the Forecast API.
 
@@ -75,7 +75,7 @@ The Forecast API should not be treated as the authoritative source for real-time
 
 ### Concurrent Streams API Guidance
 
-**File:** `Concurrent_Streams_Guidance.md`
+**File:** [`Concurrent_Streams_Guidance.md`](https://github.com/IABTechLab/Live-Event-Ad-Protocols/blob/develop/implementation-guidance/Concurrent_Streams_API_Guidance.md)
 
 This document provides implementation guidance specific to the Concurrent Streams API.
 
@@ -83,7 +83,7 @@ Use this guide when implementing support for near-real-time live event stream co
 
 The Concurrent Streams API is intended for in-event use cases, including:
 
-- near-real-time audience monitoring
+- near-real-time stream monitoring
 - traffic scaling
 - live operational optimization
 - campaign pacing adjustments
