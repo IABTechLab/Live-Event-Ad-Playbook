@@ -38,7 +38,7 @@ Forecast API provides a standardized way for authorized partners to retrieve inf
 The API is intended to help advertising systems:
 
 - discover future live events
-- estimate audience scale before the event
+- estimate viewership before the event
 - estimate advertising inventory availability
 - support infrastructure planning
 - inform deal planning and packaging
