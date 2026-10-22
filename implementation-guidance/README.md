@@ -29,7 +29,7 @@ The guidance is organized into a shared API conventions document, API-specific i
 
 ### Common API Conventions Reference
 
-**File:** `Common_API_Guidance.md`
+**File:** [`Common_API_Guidance.md`](Common_API_Guidance.md)
 
 This document defines common implementation conventions that apply across LEAP APIs unless an API-specific guide states otherwise.
 
@@ -54,7 +54,7 @@ API-specific guides should not repeat this common guidance unless they need to c
 
 ### Forecast API Guidance
 
-**File:** `Forecast_API_Guidance.md`
+**File:** [`Forecast_API_Guidance.md`](Forecast_API_Guidance.md)
 
 This document provides implementation guidance specific to the Forecast API.
 
@@ -75,7 +75,7 @@ The Forecast API should not be treated as the authoritative source for real-time
 
 ### Concurrent Streams API Guidance
 
-**File:** `Concurrent_Streams_Guidance.md`
+**File:** [`Concurrent_Streams_Guidance.md`](Concurrent_Streams_Guidance.md)
 
 This document provides implementation guidance specific to the Concurrent Streams API.
 
@@ -83,12 +83,12 @@ Use this guide when implementing support for near-real-time live event stream co
 
 The Concurrent Streams API is intended for in-event use cases, including:
 
-- near-real-time audience monitoring
+- near-real-time stream monitoring
 - traffic scaling
 - live operational optimization
 - campaign pacing adjustments
 - bid strategy adjustments during live playback
-- delivery risk management during audience spikes
+- delivery risk management during concurrency spikes
 
 The Concurrent Streams API should be used while an event is live and should not replace the Forecast API for pre-event planning.
 
@@ -100,6 +100,6 @@ The Concurrent Streams API should be used while an event is live and should not 
 
 The interactive walkthrough demonstrates how Forecast API results support pre-event planning and how Concurrent Streams API snapshots support in-event adjustment. Readers can advance through an example event scenario one API call at a time, inspect requests, responses, and field changes, and follow the evolving forecast and live audience chart.
 
-[**Launch the interactive walkthrough (GitHub Pages)**](https://iabtechlab.github.io/Live-Event-Ad-Protocols/implementation-guidance/Multiple_API_Guidance_Walkthrough.html)
+[**Launch the interactive walkthrough (GitHub Pages)**](https://iabtechlab.github.io/Live-Event-Ad-Playbook/implementation-guidance/Multiple_API_Guidance_Walkthrough.html)
 
 GitHub's Markdown and HTML source views do not run JavaScript. Use the Pages link above to interact with the full HTML walkthrough.
