@@ -1,6 +1,6 @@
 ![IAB Tech Lab](https://drive.google.com/uc?id=10yoBoG5uRETSXRrnJPUDuONujvADrSG1)
 
-# Live Event Ad Protocols
+# Live Event Ad Playbook
 
 This repository contains specifications and implementation guidance for the IAB Tech Lab Live Event Ad Playbook (LEAP).
 
