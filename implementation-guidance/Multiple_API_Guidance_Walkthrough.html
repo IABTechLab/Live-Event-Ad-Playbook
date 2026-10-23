@@ -95,8 +95,12 @@
   .arrow svg{display:block;margin:4px 0}
   .arrow.on{color:var(--ink);font-weight:600}
   /* Cross-API identity: three readable, linked scopes. */
-  .spine{margin:10px 0 12px;border:1px solid var(--line);border-radius:var(--r);padding:15px;background:var(--surface);color:var(--ink2)}
-  .identity-heading{display:flex;align-items:center;justify-content:space-between;gap:7px 14px;flex-wrap:wrap;margin:0 0 10px}
+  .spine{margin:10px 0 12px;border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;background:var(--surface);color:var(--ink2)}
+  .identity-heading{display:flex;align-items:center;justify-content:space-between;gap:7px 14px;flex-wrap:wrap;margin:0}
+  .spine.identity-expanded .identity-heading{margin-bottom:10px}
+  .identity-disclosure{display:flex;align-items:center;gap:7px;min-width:0}
+  .identity-disclosure .identity-pill{min-width:0}
+  .identity-flow[hidden]{display:none!important}
   .identity-label{font-weight:700;text-transform:uppercase;letter-spacing:.065em;font-size:11.5px;color:var(--ink)}
   .identity-summary{font-size:12.5px;margin:3px 0 0;line-height:1.45}
   .identity-summary code,.identity-note code{font-family:var(--mono);font-size:.94em;background:var(--panel);padding:1px 4px;border-radius:3px;color:var(--ink)}
@@ -351,9 +355,17 @@
   <section class="spine" id="spine" aria-labelledby="identity-title">
     <div class="identity-heading">
       <div class="identity-label" id="identity-title">Shared Key — Cross-API Identity Correlation</div>
-      <span class="identity-pill">One event - one shared content ID across forecasts, streams measurement and bidstream</span>
+      <div class="identity-disclosure">
+        <span class="identity-pill">One event - one shared content ID across forecasts, streams measurement and bidstream</span>
+        <button type="button" class="identity-toggle" id="identity-group-toggle"
+                aria-controls="identity-flow" aria-expanded="false"
+                aria-label="Expand cross-API identity details"
+                title="Show cross-API identity details">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </button>
+      </div>
     </div>
-    <div class="identity-flow">
+    <div class="identity-flow" id="identity-flow" hidden>
 <div class="identity-scope fc">
 <div class="identity-scope-title" id="identity-title-forecast"><strong>Forecast API</strong><span>Before the event</span></div>
 
@@ -501,6 +513,30 @@
     rail.appendChild(button);
   });
 
+
+  // Collapse the entire Shared Key detail area by default; each inner card
+  // still starts with only its JOIN KEY visible on expansion.
+  $('#identity-group-toggle').addEventListener('click', () => {
+    const button = $('#identity-group-toggle');
+    const willOpen = button.getAttribute('aria-expanded') !== 'true';
+    $('#identity-flow').hidden = !willOpen;
+    $('#spine').classList.toggle('identity-expanded', willOpen);
+    button.setAttribute('aria-expanded', String(willOpen));
+    button.setAttribute('aria-label', willOpen ? 'Collapse cross-API identity details' : 'Expand cross-API identity details');
+    button.title = willOpen ? 'Hide cross-API identity details' : 'Show cross-API identity details';
+    if (!willOpen) {
+      // Reset sub-disclosures so reopening reproduces the initial four-card state.
+      document.querySelectorAll('.identity-scope .identity-toggle').forEach(innerButton => {
+        document.getElementById(innerButton.getAttribute('aria-controls')).hidden = true;
+        innerButton.setAttribute('aria-expanded', 'false');
+        const scopeName = innerButton.closest('.identity-scope').querySelector('.identity-scope-title strong').textContent;
+        innerButton.setAttribute('aria-label', 'Show more ' + scopeName + ' identifiers');
+      });
+      $('#identity-note-detail').hidden = true;
+      $('#identity-note-toggle').setAttribute('aria-expanded', 'false');
+      $('#identity-note-toggle').setAttribute('aria-label', 'Expand implementation note');
+    }
+  });
 
   // Each identity scope expands independently; its JOIN KEY stays visible at the top.
   document.querySelectorAll('.identity-scope .identity-toggle').forEach(button => {
