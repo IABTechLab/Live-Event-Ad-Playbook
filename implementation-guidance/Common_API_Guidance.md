@@ -270,7 +270,6 @@ URI-based versioning with major version in base path (e.g., `/v1/`, `/v2/`).
 
 ### Version Policy
 
-- Major version only (`v1`, `v2`).
 - Increment for breaking changes, such as field removal, type changes, or behavior changes.
 - Maintain backward compatibility within the same major version.
 - Support previous versions for 12 months minimum.
