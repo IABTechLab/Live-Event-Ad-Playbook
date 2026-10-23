@@ -99,16 +99,22 @@ If common implementation guidance conflicts with API-specific guidance, the API-
 
 ## Cross-API Identity Correlation
 
-Implementers using more than one LEAP API should preserve stable identifiers that allow the same live event to be correlated across planning, live adjustment, bidding, and reporting workflows.
+Implementers using multiple LEAP APIs should preserve stable identifiers that allow the same live event to be correlated across pre-event planning, live adjustment, OpenRTB bidding, and reporting workflows.
 
-Recommended identifiers include:
+Two equally valid approaches are supported:
 
-- `content.id`
-- `content.data.cids`
-- Forecast API event-level `id`
-- event timing and stable content metadata as a fallback
+- **Content ID (`content.id`):** A publisher-provided content identifier may serve as the shared key when the same value is consistently preserved across the Forecast API, Concurrent Streams API, and OpenRTB bid requests.
+- **Extended Content IDs (`content.data[].cids`):** An Extended Content ID may serve as the shared key when the same identifier and its associated source (`content.data[].name`) are consistently provided across participating systems. This approach can support correlation when different publishers or intermediaries use different internal Content IDs.
 
-Where possible, identifiers used in LEAP APIs should also align with identifiers used in downstream OpenRTB bid requests and reporting systems.
+Neither method is inherently preferred or required over the other. Implementers should use whichever method is reliably supported and agreed upon by participating systems. Both may be provided.
+
+The Forecast API's event-level `id` is a separate identifier. It is recommended to match `content.id` where possible, but equality should not be assumed.
+
+When a shared identifier is unavailable, event timing and stable content metadata may assist with correlation, but they should not be treated as guaranteed unique identifiers.
+
+For OpenRTB, the corresponding content fields appear under `app.content` or `site.content`, depending on the inventory type.
+
+See the [Common API Guidance](implementation-guidance/Common_API_Guidance.md) for additional implementation considerations.
 
 #### About the Advanced TV Pillar at IAB Tech Lab
 https://iabtechlab.com/standards/advanced-tv/
