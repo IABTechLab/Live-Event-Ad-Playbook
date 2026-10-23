@@ -5,6 +5,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Cross-API Identity Correlation](#cross-api_identity_correlation)
 - [Naming Conventions](#naming-conventions)
 - [HTTP Methods](#http-methods)
 - [Authentication](#authentication)
@@ -23,6 +24,57 @@
 This document establishes common conventions and standards applicable to all Live Event Ad Playbook (LEAP) APIs. API-specific details, including endpoints, query parameters, and examples, are documented in separate API specification files.
 
 ---
+
+## Cross-API Identity Correlation
+
+### Purpose
+
+The Forecast API supports pre-event planning, and the Concurrent Streams API reports near-real-time stream counts. Implementers may correlate the same live event across these APIs, OpenRTB transactions, and downstream reporting by preserving a **consistent, agreed identifier**.
+
+### Equally Valid Correlation Methods
+
+Either of the following may serve as the cross-API join key; neither is inherently preferred:
+
+1. **Content ID — `content.id`:** Match the same publisher-provided Content ID across the Forecast API, Concurrent Streams API, and OpenRTB when its assignment and scope are understood and the value is consistently preserved. A Content ID is not automatically universal across unrelated publishers or sellers.
+
+2. **Extended Content ID — `content.data[].cids[]`:** Match an Extended Content ID together with the associated `data[].name` identifying its source. Comparing only the CID string without its originating source can create false matches. This approach is useful when participants have different local `content.id` values but recognize the same external content identifier.
+
+Both methods may appear in a response; neither requires the other to be present. When both are supplied but identify different content, implementers should resolve the discrepancy rather than silently treating the records as equivalent.
+
+### Example Field Paths
+
+| Context | Content ID | Extended Content ID |
+|---|---|---|
+| Forecast API | `events[].content.id` | `events[].content.data[].cids[]` |
+| Concurrent Streams API | `streamsdata[].mediastreams[].content.id` | `streamsdata[].mediastreams[].content.data[].cids[]` |
+| OpenRTB app | `app.content.id` | `app.content.data[].cids[]` |
+| OpenRTB site | `site.content.id` | `site.content.data[].cids[]` |
+
+For Extended Content IDs, the corresponding `data[].name` must also be used to identify the source. The paths above describe existing content objects, not new LEAP fields.
+
+### Illustrative Matching Values
+
+```json
+{
+  "id": "event-content-12345",
+  "data": [
+    {
+      "name": "id-provider.example",
+      "cids": ["shared-content-id-12345"]
+    }
+  ]
+}
+```
+
+This represents the content object portion of an illustrative API response or bid request. Either identifier may support correlation independently, provided the participating systems preserve it consistently.
+
+### Additional Implementation Considerations
+
+- The Forecast API's event-level `id` identifies its event record and is recommended to equal `content.id` where possible, but equality is not guaranteed.
+- An OpenRTB bid request's top-level `id` identifies the auction request, not the live event.
+- Source-qualified Extended Content IDs should be preserved through intermediaries where permitted.
+- Event timing and stable content metadata may help validate an uncertain match but are not guaranteed unique identifiers.
+- This guidance clarifies existing identifier usage and does not introduce new v1.1 API requirements.
 
 ## Naming Conventions
 
