@@ -93,9 +93,9 @@ This document tracks significant public-comment milestones, specification releas
 ## References
 
 - [LEAP standards and current specification status](https://iabtechlab.com/standards/leap/)
-- [LEAP GitHub repository](https://github.com/IABTechLab/Live-Event-Ad-Protocols)
-- [GitHub releases](https://github.com/IABTechLab/Live-Event-Ad-Protocols/releases)
-- [Forecast API specification](https://github.com/IABTechLab/Live-Event-Ad-Protocols/blob/main/ForecastAPI.md)
-- [Concurrent Streams API specification](https://github.com/IABTechLab/Live-Event-Ad-Protocols/blob/main/Concurrent-Streams.md)
+- [LEAP GitHub repository](https://github.com/IABTechLab/Live-Event-Ad-Playbook)
+- [GitHub releases](https://github.com/IABTechLab/Live-Event-Ad-Playbook/releases)
+- [Forecast API specification](Forecast_API.md)
+- [Concurrent Streams API specification](Concurrent_Streams_API.md)
 
 For LEAP questions or participation, contact [support@iabtechlab.com](mailto:support@iabtechlab.com).
