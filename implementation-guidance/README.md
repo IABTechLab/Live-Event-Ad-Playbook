@@ -96,10 +96,8 @@ The Concurrent Streams API should be used while an event is live and should not 
 
 ### Multiple LEAP API Guidance — An Interactive Walkthrough
 
-**Files:** [`Multiple_API_Guidance.md`](Multiple_API_Guidance.md) launches the interactive walkthrough [`Multiple_API_Guidance_Walkthrough.html`](Multiple_API_Guidance_Walkthrough.html)
+**Files:** [`Multiple_API_Guidance.md`](Multiple_API_Guidance.md) launches the interactive walkthrough (GitHub Pages) [`Multiple_API_Guidance_Walkthrough.html`](https://iabtechlab.github.io/Live-Event-Ad-Playbook/implementation-guidance/Multiple_API_Guidance_Walkthrough.html)
 
 The interactive walkthrough demonstrates how Forecast API results support pre-event planning and how Concurrent Streams API snapshots support in-event adjustment. Readers can advance through an example event scenario one API call at a time, inspect requests, responses, and field changes, and follow the evolving forecast and live audience chart.
 
-[**Launch the interactive walkthrough (GitHub Pages)**](https://iabtechlab.github.io/Live-Event-Ad-Playbook/implementation-guidance/Multiple_API_Guidance_Walkthrough.html)
-
-GitHub's Markdown and HTML source views do not run JavaScript. Use the Pages link above to interact with the full HTML walkthrough.
+GitHub's Markdown and HTML source views do not run JavaScript. Use the [`GitHub Pages Link`](https://iabtechlab.github.io/Live-Event-Ad-Playbook/implementation-guidance/Multiple_API_Guidance_Walkthrough.html) to interact with the full HTML walkthrough.
