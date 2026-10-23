@@ -63,13 +63,13 @@ Use this guide when implementing support for future live event forecast discover
 The Forecast API is intended for pre-event use cases, including:
 
 - future event discovery
-- expected audience forecasting
+- expected streams forecasting
 - expected ad inventory forecasting
 - infrastructure preparation
 - deal planning
 - campaign planning before a live event
 
-The Forecast API should not be treated as the authoritative source for real-time audience levels once an event is live. During the live event, implementers should use the Concurrent Streams API for real-time adjustment signals.
+The Forecast API should not be treated as the authoritative source for real-time streams levels once an event is live. During the live event, implementers should use the Concurrent Streams API for real-time adjustment signals.
 
 ---
 
@@ -98,6 +98,6 @@ The Concurrent Streams API should be used while an event is live and should not 
 
 **Files:** [`Multiple_API_Guidance.md`](Multiple_API_Guidance.md) launches the interactive walkthrough (GitHub Pages) [`Multiple_API_Guidance_Walkthrough.html`](https://iabtechlab.github.io/Live-Event-Ad-Playbook/implementation-guidance/Multiple_API_Guidance_Walkthrough.html)
 
-The interactive walkthrough demonstrates how Forecast API results support pre-event planning and how Concurrent Streams API snapshots support in-event adjustment. Readers can advance through an example event scenario one API call at a time, inspect requests, responses, and field changes, and follow the evolving forecast and live audience chart.
+The interactive walkthrough demonstrates how Forecast API results support pre-event planning and how Concurrent Streams API snapshots support in-event adjustment. Readers can advance through an example event scenario one API call at a time, inspect requests, responses, and field changes, and follow the evolving forecast and live steams chart.
 
 GitHub's Markdown and HTML source views do not run JavaScript. Use the [`GitHub Pages Link`](https://iabtechlab.github.io/Live-Event-Ad-Playbook/implementation-guidance/Multiple_API_Guidance_Walkthrough.html) to interact with the full HTML walkthrough.
