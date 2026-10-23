@@ -5,7 +5,7 @@
 #### About the Advanced TV Pillar at IAB Tech Lab
 https://iabtechlab.com/standards/advanced-tv/
 
-#### About the Live Event Ads Playbook (LEAP)
+#### About the Live Event Ad Playbook (LEAP)
 https://iabtechlab.com/leap
 
 #### About OpenRTB
