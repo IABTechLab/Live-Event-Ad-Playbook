@@ -7,7 +7,7 @@ This document tracks significant public-comment milestones, specification releas
 
 ## October 28, 2026 — LEAP Implementation Guidance v1.0 
 
-**Status:** Planned public-comment release  
+**Status:** Public-comment release  
 **Scope:** 
 - Implementation guidance for the existing LEAP Forecast API and Concurrent Streams API designs.
 - Existing specifications renamed for consistency, no changes to the normative API specifications are introduced by this documentation release.
@@ -34,6 +34,13 @@ This document tracks significant public-comment milestones, specification releas
 
 ---
 
+## October 22, 2026 - Repository Renamed: Live Event Ad Playbook (LEAP)
+**Status:** GitHub Repo Name Change 
+- Renamed the GitHub repository from `Live-Event-Ad-Protocols` to `Live-Event-Ad-Playbook`.
+- Aligned the repository name with the established Live Event Ad Playbook (LEAP) initiative, encompassing its API specifications and implementation guidance.
+- This administrative change does not introduce changes to the technical specifications or API behavior.
+- Existing repository links should continue to redirect through GitHub's repository rename functionality, subject to GitHub's normal redirect behavior.
+- 
 ## July 28, 2026 — Concurrent Streams v1 (GitHub Release Tag)
 
 **Status:** GitHub release record  
