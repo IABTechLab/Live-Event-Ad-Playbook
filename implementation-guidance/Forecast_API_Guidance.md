@@ -67,6 +67,8 @@ Typical flow:
 
 Forecast API is not intended to define consumer-facing forecast creation, update, patch, or delete workflows.
 
+<B>NOTE:</B> The Forecast API v1.0 spec contains language about parties pushing manifests to exchanges and DSPs which is inconsistent with the explicity pull-model described throughout these implementation guides. The language in that spec will be cleared up during its next iteration.
+
 ## Supported HTTP Methods
 
 The primary method is:
@@ -102,8 +104,8 @@ Consumers should be familiar with the Forecast API specification before relying 
 
 | Parameter | Required | Guidance |
 |---|---:|---|
-| `scheduledstart` | Yes | Return events scheduled on or after the specified timestamp. |
-| `scheduledend` | Yes | Return events scheduled on or before the specified timestamp. |
+| `scheduledstart` | Recommended | Return events scheduled on or after the specified timestamp. Required only for the illustrated time-window retrieval pattern—not every Forecast API request |
+| `scheduledend` | Recommended | Return events scheduled on or before the specified timestamp. Required only for the illustrated time-window retrieval pattern—not every Forecast API request|
 | `lastmodifieddate` | Optional | Return events modified on or after the specified timestamp. |
 | `eventstatus` | Optional | Return events matching a specific event status value. |
 | `id` | Optional | Filter to a specific Forecast API event record identifier, if supported. This is the event-level `id` field and is distinct from `content.id` nested in the `content` object. |
@@ -231,18 +233,23 @@ Consumers should interpret `unplanned = 1` as a signal that:
 - delivery may be uneven across the event
 - pacing assumptions should include flexibility
 
+
 ## Cross-API Identity Guidance
 
-Forecast records should include identifiers that allow consumers to match forecasted events to live stream-count records and OpenRTB bid requests.
+Forecast records should include stable identifiers that allow consumers to correlate forecasted events with live stream-count records, OpenRTB bid requests, and downstream reporting systems.
 
-Recommended identity hierarchy:
+Two equally valid methods may be used for cross-API identity correlation:
 
-1. Use `content.id` as the preferred stable content/event linkage identifier where possible.
-2. Use `content.data.cids` for shared or third-party identifiers where available.
-3. Align the Forecast API event `id` with `content.id` where possible.
-4. Avoid relying only on title and scheduled time unless no stable identifier exists.
+1. **Content ID (`content.id`):** A consistent publisher-provided content identifier shared across the Forecast API, Concurrent Streams API, and OpenRTB.
+2. **Extended Content ID (`content.data[].cids[]`):** A consistent external content identifier, qualified by its associated source (`content.data[].name`), shared across participating systems.
 
-Consumers should retain the Forecast API event `id`, `content.id`, and `content.data.cids` values so they can correlate pre-event forecast records with live Concurrent Streams API records, OpenRTB bid requests, deal planning systems, and reporting systems.
+Neither method is inherently preferred. Implementers should use whichever identifier is consistently supported and agreed upon by participating systems. Both may be provided.
+
+The Forecast API's event-level `id` identifies the forecast event record and should match `content.id` where possible, as recommended by the Forecast API specification. However, consumers should not assume these values are always identical.
+
+Consumers should preserve available identifiers to support correlation across planning, live adjustment, bidding, and reporting workflows. When shared identifiers are unavailable, event timing and stable content metadata may assist with correlation but should not be considered guaranteed unique identifiers.
+
+Where possible, the same identifiers should be preserved in OpenRTB `app.content` or `site.content` objects. See the Common API Guidance for additional cross-API identity correlation considerations.
 
 ## Example Response
 
@@ -261,10 +268,12 @@ Consumers should retain the Forecast API event `id`, `content.id`, and `content.
         "id": "event-content-12345",
         "title": "Championship Event",
         "series": "Generic Sports Series",
-        "data": {
+        "data": [
+          {
           "name": "id-provider.example",
           "cids": ["shared-content-id-12345"]
-        }
+          }
+        ]
       },
       "streamsdata": [
         {
