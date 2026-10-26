@@ -12,7 +12,7 @@ LEAP provides technical protocols intended to help advertising systems prepare f
 
 | File | Description |
 |---|---|
-| [`Forecast_API.md`](Forecast_API.md) | Defines the Forecast API, which enables authorized partners to retrieve information about future live event advertising supply, including event schedules, expected streams scale, and expected ad inventory. |
+| [`Forecast_API.md`](Forecast_API.md) | Defines the Forecast API, which enables authorized partners to retrieve information about future live event advertising supply, including event schedules, forecast expected concurrent streams, and expected ad inventory. |
 | [`Concurrent_Streams_API.md`](Concurrent_Streams_API.md) | Defines the Concurrent Streams API, which enables authorized subscribers to retrieve near-real-time stream-count information while live events are occurring. |
 
 ### Implementation Guidance
@@ -43,7 +43,7 @@ It helps advertising systems:
 
 - discover future live events
 - estimate streams scale before the event
-- estimate advertising inventory availability
+- anticipate ad inventory configuration
 - support infrastructure planning
 - inform deal planning and packaging
 - support campaign planning before the event begins
