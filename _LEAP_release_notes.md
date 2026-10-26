@@ -3,12 +3,17 @@
 
 This document tracks significant public-comment milestones, specification releases, and implementation guidance for the IAB Tech Lab Live Event Ad Playbook (LEAP).
 
-> **Release status:** Dates below distinguish public-comment openings and closings, specification finalization, and GitHub release tags. A public-comment release is not a final specification. The October 28, 2026 Implementation Guidance entry is **scheduled**, not yet published as of October 23, 2026.
+> **Release status:** Dates below distinguish public-comment openings and closings, specification finalization, and GitHub release tags. A public-comment release is not a final specification.
 
-## October 28, 2026 — LEAP Implementation Guidance v1.0 (Scheduled Public Comment)
+## October 28, 2026 — LEAP Implementation Guidance v1.0 
 
 **Status:** Planned public-comment release  
-**Scope:** Implementation guidance for the existing LEAP Forecast API and Concurrent Streams API designs. No changes to the normative API specifications are introduced by this documentation release.
+**Scope:** 
+- Implementation guidance for the existing LEAP Forecast API and Concurrent Streams API designs.
+- Existing specifications renamed for consistency, no changes to the normative API specifications are introduced by this documentation release.
+  - "/Concurrent-Streams.md" renamed to "/Concurrent_Streams_AIP.md"
+  - "/ForecastAPI.md" renamed to "/Forecast_API.md"
+- Introduced this Release Notes document
 
 ### Included documentation
 
@@ -25,7 +30,17 @@ This document tracks significant public-comment milestones, specification releas
 - API-specific explanations that complement, rather than replace, the Forecast API and Concurrent Streams API specifications.
 - A single-event walkthrough following the transition from **pre-event forecasts** to **live concurrency signals** and **post-event review**.
 - Guidance on correlating an event across planning, live measurement, and downstream OpenRTB using shared content identifiers where available.
-- Illustrative considerations for polling, capacity planning, bidding, pacing, and interpreting audience signals without equating concurrent streams with guaranteed biddable inventory.
+- Illustrative considerations for polling, capacity planning, bidding, pacing, and interpreting stream-count signals without equating concurrent streams with guaranteed biddable inventory.
+
+---
+
+## July 28, 2026 — Concurrent Streams v1 (GitHub Release Tag)
+
+**Status:** GitHub release record  
+**Tag:** [`cs-202607`](https://github.com/IABTechLab/Live-Event-Ad-Playbook/releases/tag/cs-202607)
+
+- GitHub published a release titled **Concurrent Streams v1**, referencing the Concurrent Streams API contribution.
+- This dated GitHub tag is recorded separately from the earlier Concurrent Streams API v1.0 public-comment and finalization milestones; it should not be interpreted as the original public-comment opening date.
 
 ---
 
@@ -34,7 +49,7 @@ This document tracks significant public-comment milestones, specification releas
 **Status:** Public-comment period concluded
 
 - Closed the public-comment window for the proposed LEAP Forecasting API.
-- The API supports advance discovery of upcoming programming and live events, including event scheduling, expected audience, and anticipated advertising inventory information.
+- The API supports advance discovery of upcoming programming and live events, including event scheduling, expected concurrent stream counts, and anticipated advertising inventory configuration.
 - Public-comment closure by itself does not establish a separately verified final v1.0 publication date.
 
 [Forecasting API public-comment announcement](https://iabtechlab.com/press-releases/iab-tech-lab-opens-public-comment-on-leap-forecasting-api/)
@@ -88,14 +103,13 @@ This document tracks significant public-comment milestones, specification releas
 - **Common implementation guidance** provides shared conventions across LEAP APIs.
 - **API-specific guidance** explains implementation patterns and operational considerations for each API.
 - **Multiple API Guidance** demonstrates an illustrative end-to-end workflow; its examples do not establish new normative API requirements.
-- **Future proposals**, including Forecast API v1.1 suggestions and enhancements from the interactive walkthrough's earlier proposal mode, remain outside the v1.0 Implementation Guidance public-comment package until separately reviewed and approved.
 
 ## References
 
 - [LEAP standards and current specification status](https://iabtechlab.com/standards/leap/)
 - [LEAP GitHub repository](https://github.com/IABTechLab/Live-Event-Ad-Playbook)
 - [GitHub releases](https://github.com/IABTechLab/Live-Event-Ad-Playbook/releases)
-- [Forecast API specification](Forecast_API.md)
-- [Concurrent Streams API specification](Concurrent_Streams_API.md)
+- [Forecast API specification](https://github.com/IABTechLab/Live-Event-Ad-Playbook/blob/develop/Forecast_API.md)
+- [Concurrent Streams API specification](https://github.com/IABTechLab/Live-Event-Ad-Playbook/blob/develop/Concurrent_Streams_API.md)
 
 For LEAP questions or participation, contact [support@iabtechlab.com](mailto:support@iabtechlab.com).
