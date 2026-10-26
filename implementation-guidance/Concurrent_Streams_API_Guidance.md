@@ -123,21 +123,22 @@ A Concurrent Streams response includes:
 | `sstreams` | integer | Concurrent SSAI streams. At least one of `sstreams` or `cstreams` should be present. |
 | `cstreams` | integer | Concurrent CSAI streams. At least one of `sstreams` or `cstreams` should be present. |
 
-
 ## Content Identification
 
 Concurrent Streams API consumers need to associate current stream counts with the same event and content referenced in planning, bidding, and reporting systems.
 
-Providers should pass at least one stable content identifier whenever possible.
+Providers should include stable content identifiers whenever possible.
 
-Recommended identity hierarchy:
+Two equally valid methods may be used for cross-API identity correlation:
 
-1. `content.id`
-2. `content.data.cids`
-3. event timing plus stable content metadata as a fallback
+1. **Content ID (`content.id`):** A consistent publisher-provided identifier shared across the Forecast API, Concurrent Streams API, and OpenRTB.
+2. **Extended Content ID (`content.data[].cids[]`):** A consistent external content identifier, qualified by its associated source (`content.data[].name`), shared across participating systems.
 
-When possible, the same content identifier should be present in OpenRTB bid requests and other downstream transaction or reporting systems.
+Neither method is inherently preferred. Implementers should use whichever identifier is consistently supported and agreed upon by participating systems. Both may be provided.
 
+When shared identifiers are unavailable, event timing and stable content metadata may assist with correlation but should not be considered guaranteed unique identifiers.
+
+Where possible, the same identifiers should be preserved in OpenRTB bid requests and downstream reporting systems. See the Common API Guidance for additional cross-API identity correlation considerations.
 
 ## Regional Interpretation
 
@@ -209,10 +210,10 @@ Consumers should use Concurrent Streams signals to:
             "id": "event-content-12345",
             "title": "Championship Event",
             "series": "Generic Sports Series",
-            "data": {
+            "data": [{
               "name": "id-provider.example",
               "cids": ["shared-content-id-12345"]
-            }
+            }]
           },
           "eventstart": 1752000000000,
           "eventend": 1752014400000,
