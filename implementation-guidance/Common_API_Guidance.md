@@ -74,7 +74,6 @@ This represents the content object portion of an illustrative API response or bi
 - An OpenRTB bid request's top-level `id` identifies the auction request, not the live event.
 - Source-qualified Extended Content IDs should be preserved through intermediaries where permitted.
 - Event timing and stable content metadata may help validate an uncertain match but are not guaranteed unique identifiers.
-- This guidance clarifies existing identifier usage and does not introduce new v1.1 API requirements.
 
 ## Naming Conventions
 
@@ -127,42 +126,6 @@ Specifies security mechanisms for API access and authorization.
 
 Authentication protocol is left to the discretion of the event creator or API provider and should be discussed with API users before implementation. OAuth 2.0 is a common way to support secure API access and is recommended for consideration, but it is not required or prescribed by this guidance.
 
-When OAuth 2.0 is used, include the access token in the `Authorization` header:
-
-```http
-Authorization: Bearer {token}
-```
-
-### Mechanism
-
-OAuth 2.0 may be implemented using Client Credentials, Authorization Code grant, or another mutually agreed approach.
-
-### Required Headers
-
-```http
-Authorization: Bearer {access_token}
-Content-Type: application/json
-Accept: application/json
-```
-
-### Optional Headers
-
-```http
-Idempotency-Key: {uuid}
-X-Request-ID: {uuid}
-```
-
-### Security Requirements
-
-- HTTPS only (TLS 1.2+).
-- Token expiration, rotation, and refresh policies should be defined by the API provider.
-- Role-based access control may be defined per API.
-
-### Error Responses
-
-- `401 Unauthorized` - Missing or invalid credentials.
-- `403 Forbidden` - Insufficient permissions.
-
 ---
 
 ## Request and Response Formats
@@ -177,7 +140,7 @@ application/json; charset=utf-8
 
 ### Date/Time Format
 
-ISO 8601 UTC (`YYYY-MM-DDTHH:MM:SSZ`).
+API field timestamps follow their specs (Unix milliseconds); ISO 8601 may be used only for human-readable rendering unless an API explicitly defines otherwise.
 
 ### Field Conventions
 
@@ -197,7 +160,7 @@ X-RateLimit-Reset: {timestamp}
 ```
 
 ### Collection Response Structure
-
+<i>Illustrative, not the LEAP API response schema</i>
 ```json
 {
   "data": [ ... ],
@@ -290,7 +253,7 @@ Defines standard approach for handling large result sets.
 - `offset={number}` - Starting position (default: 0).
 
 ### Response Structure
-
+<i>Illustrative, not the LEAP API response schema</i>
 ```json
 {
   "data": [ ... ],
