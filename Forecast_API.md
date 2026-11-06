@@ -32,6 +32,7 @@ Today’s programmatic systems lack standardized mechanisms for surfacing future
   - [Object: UpcomingEvent](#upcomingevent)
   - [Object: Content](#object-content)
   - [Object: StreamsData](#object-streamsdata)
+  - [Object: Programmatic](#object-programmatic)
   - [Object: AdInventoryConfiguration](#object-adinventoryconfiguration)
   - [Partner Endpoint](#partner-endpoint)
   - [Object: Response](#object-response)
@@ -39,6 +40,7 @@ Today’s programmatic systems lack standardized mechanisms for surfacing future
 - [Uncertainty](#uncertainty)
   - [Using Tentative vs Scheduled](#using-tentative-vs-scheduled)
   - [Static vs Variable Ad Inventory](#static-vs-variable-ad-inventory)
+  - [Direct-Sold vs Programmatic Supply](#direct-sold-vs-programmatic-supply)
 - [JSON Examples](#json-examples)
   - [Sample: Sports Game](#sample-sports-game)
   - [Sample: Sports Event Series with Conditional Schedule](#sample-sports-event-series-with-conditional-schedule)
@@ -108,6 +110,21 @@ Refer to the [AdCOM 1.0 Content Object](https://github.com/InteractiveAdvertisin
 | country | string | Country code where expected viewership would happen using ISO-3166-1-alpha-3. |
 | expectedpeak | int | Expected peak streams for this event in the country listed in the `country` attribute. <br><br>Required if passing this object. |
 | lowerbound | int | Estimated lowest number of streams for this event in the country listed in the `country` attribute. |
+| programmatic | object | Forecast of the portion of ad supply for this event, in the country listed in the `country` attribute, that is expected to be available for programmatic fulfillment (i.e., not committed to direct-sold or other non-programmatic channels). <br><br>See <a href="#programmatic">Object: Programmatic</a>. |
+| ext | object | Optional extensions. |
+
+#### Object: Programmatic <a name="programmatic"></a>
+
+Viewership alone does not indicate how much inventory a programmatic buyer can actually transact against, since some or all of an event's ad load may be sold direct. This object lets the Forecast Data Provider express the expected programmatically available supply. Sellers should populate whichever measures they are able to forecast; at least one of `share`, `expectedimps`, or `addurationsec` should be present when this object is included.
+
+| Attribute | Type | Description |
+|---|---|---|
+| scope | int, required | Perspective from which the values in this object are expressed, where <br><br>`1 = market` – all supply for this event/country not committed to direct-sold or other non-programmatic channels, regardless of which programmatic partners may access it<br>`2 = requestor` – only the supply accessible to the authenticated `requestor` (e.g., via existing agreements or deals) |
+| share | float | Fraction of the event's total ad load in this country expected to be available programmatically, expressed as a value from `0.0` to `1.0`. E.g., `0.35` indicates 35% of ad load is expected to be programmatic and 65% is committed to other channels. |
+| expectedimps | int | Expected number of programmatically available ad impressions for this event in this country. |
+| lowerbound | int | Estimated lowest number of programmatically available ad impressions. |
+| upperbound | int | Estimated highest number of programmatically available ad impressions. |
+| addurationsec | int | Expected programmatically available ad duration per stream (in seconds). This is a subset of `totaladdurationsec` in the <a href="#adinventoryconfig">AdInventoryConfiguration</a> object. |
 | ext | object | Optional extensions. |
 
 #### Object: AdInventoryConfiguration <a name="adinvnetoryconfig"></a>
@@ -199,6 +216,41 @@ Many live events contain both planned and unplanned inventory. Recommended pract
 - Expect inventory delivery to be non-uniform and potentially front- or back-loaded
 - Plan for dynamic pacing and potential makegoods
 
+### Direct-Sold vs Programmatic Supply
+
+The `streamsdata` and `adinventoryconfig` objects describe the total audience and total ad load of an event. In practice, a significant portion of that ad load is often committed to direct-sold sponsorships, upfronts, or other non-programmatic channels before the event airs. Without a signal for this, a buyer computing `expectedpeak × expectedpodcount × slots` will systematically overestimate what can be bought programmatically.
+
+The `programmatic` object in <a href="#streamsdata">StreamsData</a> closes this gap by forecasting the programmatically available portion of supply, per country.
+
+#### Choosing a Measure
+
+Sellers may express programmatic availability as a share of ad load (`share`), as absolute impressions (`expectedimps` with optional `lowerbound`/`upperbound`), as programmatic ad seconds per stream (`addurationsec`), or any combination. Guidance:
+
+- `share` is the least sensitive measure and is recommended as a baseline, since it does not disclose absolute direct-sold volume.
+- `expectedimps` is the most directly actionable for buyers and is recommended when the seller has a mature forecasting model.
+- `addurationsec` is useful when direct sales are structured around fixed pod positions (e.g., halftime sold direct, in-game available programmatically).
+- When multiple measures are provided, they should be mutually consistent (e.g., `addurationsec ≈ share × totaladdurationsec`).
+
+#### Deriving Impressions
+
+When `expectedimps` is absent, buyers can approximate programmatic impressions as: `expectedpeak × (addurationsec ÷ average ad length)` or `expectedpeak × share × (totaladdurationsec ÷ average ad length)`. These are rough estimates; peak concurrency is not sustained across all pods, so actual impressions will typically be lower. Sellers who can provide `expectedimps` directly should do so.
+
+#### Market vs Requestor Scope
+
+The `scope` attribute is required so that buyers do not misinterpret the figures.
+
+- `scope = 1` (market) reflects the total programmatic opportunity for the event, and will be the same value for every partner querying the endpoint. This is appropriate for planning and for deal negotiation.
+- `scope = 2` (requestor) reflects only the supply the authenticated `requestor` can access, given existing agreements. Sellers should use this when they allocate supply across exchanges or DSPs and want each partner to see a realistic figure.
+- The specific commercial terms governing access remain out of scope and should be communicated through the Deal API.
+
+#### Interaction with `unplanned`
+
+When `unplanned = 1`, the programmatic forecast is subject to the same uncertainty as the total ad load. Sellers should use `lowerbound`/`upperbound` to convey that uncertainty, and buyers should treat `expectedimps` as an expected value rather than a commitment.
+
+#### Absence of the Object
+
+If `programmatic` is omitted, buyers should not assume all supply is programmatically available. It simply indicates the seller has not provided this forecast.
+
 ## JSON Examples
 
 > All examples below are **linted and valid JSON** (fixed invalid quotes, typos, duplicate keys, and missing/trailing commas from the source examples).
@@ -239,12 +291,24 @@ Many live events contain both planned and unplanned inventory. Recommended pract
     {
       "country": "USA",
       "expectedpeak": 1200000,
-      "lowerbound": 950000
+      "lowerbound": 950000,
+      "programmatic": {
+        "scope": 1,
+        "share": 0.4,
+        "expectedimps": 9600000,
+        "lowerbound": 7200000,
+        "upperbound": 11500000,
+        "addurationsec": 384
+      }
     },
     {
       "country": "GBR",
       "expectedpeak": 300000,
-      "lowerbound": 250000
+      "lowerbound": 250000,
+      "programmatic": {
+        "scope": 1,
+        "share": 0.75
+      }
     }
   ],
   "adinventoryconfig": {
@@ -568,7 +632,12 @@ Many live events contain both planned and unplanned inventory. Recommended pract
   "streamsdata": [
     {
       "country": "USA",
-      "expectedpeak": 35000000
+      "expectedpeak": 35000000,
+      "programmatic": {
+        "scope": 2,
+        "share": 0.1,
+        "expectedimps": 14000000
+      }
     }
   ],
   "adinventoryconfig": {
