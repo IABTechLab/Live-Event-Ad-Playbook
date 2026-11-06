@@ -5,6 +5,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [Cross-API Identity Correlation](#cross-api_identity_correlation)
 - [Naming Conventions](#naming-conventions)
 - [HTTP Methods](#http-methods)
 - [Authentication](#authentication)
@@ -23,6 +24,56 @@
 This document establishes common conventions and standards applicable to all Live Event Ad Playbook (LEAP) APIs. API-specific details, including endpoints, query parameters, and examples, are documented in separate API specification files.
 
 ---
+
+## Cross-API Identity Correlation
+
+### Purpose
+
+The Forecast API supports pre-event planning, and the Concurrent Streams API reports near-real-time stream counts. Implementers may correlate the same live event across these APIs, OpenRTB transactions, and downstream reporting by preserving a **consistent, agreed identifier**.
+
+### Equally Valid Correlation Methods
+
+Either of the following may serve as the cross-API join key; neither is inherently preferred:
+
+1. **Content ID — `content.id`:** Match the same publisher-provided Content ID across the Forecast API, Concurrent Streams API, and OpenRTB when its assignment and scope are understood and the value is consistently preserved. A Content ID is not automatically universal across unrelated publishers or sellers.
+
+2. **Extended Content ID — `content.data[].cids[]`:** Match an Extended Content ID together with the associated `data[].name` identifying its source. Comparing only the CID string without its originating source can create false matches. This approach is useful when participants have different local `content.id` values but recognize the same external content identifier.
+
+Both methods may appear in a response; neither requires the other to be present. When both are supplied but identify different content, implementers should resolve the discrepancy rather than silently treating the records as equivalent.
+
+### Example Field Paths
+
+| Context | Content ID | Extended Content ID |
+|---|---|---|
+| Forecast API | `events[].content.id` | `events[].content.data[].cids[]` |
+| Concurrent Streams API | `streamsdata[].mediastreams[].content.id` | `streamsdata[].mediastreams[].content.data[].cids[]` |
+| OpenRTB app | `app.content.id` | `app.content.data[].cids[]` |
+| OpenRTB site | `site.content.id` | `site.content.data[].cids[]` |
+
+For Extended Content IDs, the corresponding `data[].name` must also be used to identify the source. The paths above describe existing content objects, not new LEAP fields.
+
+### Illustrative Matching Values
+
+```json
+{
+  "id": "event-content-12345",
+  "data": [
+    {
+      "name": "id-provider.example",
+      "cids": ["shared-content-id-12345"]
+    }
+  ]
+}
+```
+
+This represents the content object portion of an illustrative API response or bid request. Either identifier may support correlation independently, provided the participating systems preserve it consistently.
+
+### Additional Implementation Considerations
+
+- The Forecast API's event-level `id` identifies its event record and is recommended to equal `content.id` where possible, but equality is not guaranteed.
+- An OpenRTB bid request's top-level `id` identifies the auction request, not the live event.
+- Source-qualified Extended Content IDs should be preserved through intermediaries where permitted.
+- Event timing and stable content metadata may help validate an uncertain match but are not guaranteed unique identifiers.
 
 ## Naming Conventions
 
@@ -75,42 +126,6 @@ Specifies security mechanisms for API access and authorization.
 
 Authentication protocol is left to the discretion of the event creator or API provider and should be discussed with API users before implementation. OAuth 2.0 is a common way to support secure API access and is recommended for consideration, but it is not required or prescribed by this guidance.
 
-When OAuth 2.0 is used, include the access token in the `Authorization` header:
-
-```http
-Authorization: Bearer {token}
-```
-
-### Mechanism
-
-OAuth 2.0 may be implemented using Client Credentials, Authorization Code grant, or another mutually agreed approach.
-
-### Required Headers
-
-```http
-Authorization: Bearer {access_token}
-Content-Type: application/json
-Accept: application/json
-```
-
-### Optional Headers
-
-```http
-Idempotency-Key: {uuid}
-X-Request-ID: {uuid}
-```
-
-### Security Requirements
-
-- HTTPS only (TLS 1.2+).
-- Token expiration, rotation, and refresh policies should be defined by the API provider.
-- Role-based access control may be defined per API.
-
-### Error Responses
-
-- `401 Unauthorized` - Missing or invalid credentials.
-- `403 Forbidden` - Insufficient permissions.
-
 ---
 
 ## Request and Response Formats
@@ -125,7 +140,7 @@ application/json; charset=utf-8
 
 ### Date/Time Format
 
-ISO 8601 UTC (`YYYY-MM-DDTHH:MM:SSZ`).
+API field timestamps follow their specs (Unix milliseconds); ISO 8601 may be used only for human-readable rendering unless an API explicitly defines otherwise.
 
 ### Field Conventions
 
@@ -145,7 +160,7 @@ X-RateLimit-Reset: {timestamp}
 ```
 
 ### Collection Response Structure
-
+<i>Illustrative, not the LEAP API response schema</i>
 ```json
 {
   "data": [ ... ],
@@ -238,7 +253,7 @@ Defines standard approach for handling large result sets.
 - `offset={number}` - Starting position (default: 0).
 
 ### Response Structure
-
+<i>Illustrative, not the LEAP API response schema</i>
 ```json
 {
   "data": [ ... ],
@@ -270,7 +285,6 @@ URI-based versioning with major version in base path (e.g., `/v1/`, `/v2/`).
 
 ### Version Policy
 
-- Major version only (`v1`, `v2`).
 - Increment for breaking changes, such as field removal, type changes, or behavior changes.
 - Maintain backward compatibility within the same major version.
 - Support previous versions for 12 months minimum.

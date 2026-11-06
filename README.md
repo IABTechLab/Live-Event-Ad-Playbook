@@ -1,6 +1,6 @@
 ![IAB Tech Lab](https://drive.google.com/uc?id=10yoBoG5uRETSXRrnJPUDuONujvADrSG1)
 
-# Live Event Ad Protocols
+# Live Event Ad Playbook
 
 This repository contains specifications and implementation guidance for the IAB Tech Lab Live Event Ad Playbook (LEAP).
 
@@ -12,7 +12,7 @@ LEAP provides technical protocols intended to help advertising systems prepare f
 
 | File | Description |
 |---|---|
-| [`Forecast_API.md`](Forecast_API.md) | Defines the Forecast API, which enables authorized partners to retrieve information about future live event advertising supply, including event schedules, expected audience scale, and expected ad inventory. |
+| [`Forecast_API.md`](Forecast_API.md) | Defines the Forecast API, which enables authorized partners to retrieve information about future live event advertising supply, including event schedules, forecast expected concurrent streams, and expected ad inventory. |
 | [`Concurrent_Streams_API.md`](Concurrent_Streams_API.md) | Defines the Concurrent Streams API, which enables authorized subscribers to retrieve near-real-time stream-count information while live events are occurring. |
 
 ### Implementation Guidance
@@ -42,8 +42,8 @@ The Forecast API is intended for use before a live event begins.
 It helps advertising systems:
 
 - discover future live events
-- estimate audience scale before the event
-- estimate advertising inventory availability
+- estimate streams scale before the event
+- anticipate ad inventory configuration
 - support infrastructure planning
 - inform deal planning and packaging
 - support campaign planning before the event begins
@@ -56,7 +56,7 @@ The Concurrent Streams API is intended for use while a live event is occurring.
 
 It helps advertising systems:
 
-- understand current live audience scale
+- understand current live streams scale
 - prepare for and respond to QPS spikes
 - scale regional infrastructure
 - adjust bidding and pacing behavior
@@ -99,16 +99,22 @@ If common implementation guidance conflicts with API-specific guidance, the API-
 
 ## Cross-API Identity Correlation
 
-Implementers using more than one LEAP API should preserve stable identifiers that allow the same live event to be correlated across planning, live adjustment, bidding, and reporting workflows.
+Implementers using multiple LEAP APIs should preserve stable identifiers that allow the same live event to be correlated across pre-event planning, live adjustment, OpenRTB bidding, and reporting workflows.
 
-Recommended identifiers include:
+Two equally valid approaches are supported:
 
-- `content.id`
-- `content.data.cids`
-- Forecast API event-level `id`
-- event timing and stable content metadata as a fallback
+- **Content ID (`content.id`):** A publisher-provided content identifier may serve as the shared key when the same value is consistently preserved across the Forecast API, Concurrent Streams API, and OpenRTB bid requests.
+- **Extended Content IDs (`content.data[].cids`):** An Extended Content ID may serve as the shared key when the same identifier and its associated source (`content.data[].name`) are consistently provided across participating systems. This approach can support correlation when different publishers or intermediaries use different internal Content IDs.
 
-Where possible, identifiers used in LEAP APIs should also align with identifiers used in downstream OpenRTB bid requests and reporting systems.
+Neither method is inherently preferred or required over the other. Implementers should use whichever method is reliably supported and agreed upon by participating systems. Both may be provided.
+
+The Forecast API's event-level `id` is a separate identifier. It is recommended to match `content.id` where possible, but equality should not be assumed.
+
+When a shared identifier is unavailable, event timing and stable content metadata may assist with correlation, but they should not be treated as guaranteed unique identifiers.
+
+For OpenRTB, the corresponding content fields appear under `app.content` or `site.content`, depending on the inventory type.
+
+See the [Common API Guidance](implementation-guidance/Common_API_Guidance.md) for additional implementation considerations.
 
 #### About the Advanced TV Pillar at IAB Tech Lab
 https://iabtechlab.com/standards/advanced-tv/
