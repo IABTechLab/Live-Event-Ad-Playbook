@@ -12,9 +12,10 @@ The documentation is organized around an **interactive end-to-end walkthrough**,
 
 **Recommended starting point for all readers.** Before exploring individual API fields and conventions, follow a complete illustrative live event from advance planning through live operation and post-event review.
 
-The walkthrough demonstrates how the two LEAP APIs work together:
+The walkthrough demonstrates how the LEAP APIs work together, and (as a proposal under public comment) where the existing IAB Tech Lab Ad Management API fits between them:
 
 - **Before the event — Forecast API:** Discover upcoming live events, evaluate expected stream counts and advertising inventory configuration, and prepare campaigns, deals, and infrastructure.
+- **Before the event — creative readiness (Ad Management API; proposed):** Using the event's `inventoryconfig` as the creative brief, submit the creatives intended for the event for audit and ingestion far enough ahead of `scheduledstart` to allow for correction and transcoding, and confirm their audit status before the stream opens. See [`Creative_Readiness_Guidance.md`](Creative_Readiness_Guidance.md).
 - **While the stream is open — Concurrent Streams API:** Monitor near-real-time stream counts, understand how streams change over the event, and inform pacing, bidding, and operational scaling decisions.
 - **After the event — Review:** Compare saved forecast and live stream snapshots to understand where actual conditions differed from the plan.
 
@@ -34,6 +35,7 @@ After completing the walkthrough, use the following documents as needed:
 | 2 | [Common API Conventions Reference](Common_API_Guidance.md) | Learn the conventions shared across LEAP APIs, including authentication, formats, errors, and cross-API identity correlation. |
 | 3 | [Forecast API specification](../Forecast_API.md) and/or [Concurrent Streams API specification](../Concurrent_Streams_API.md) | Review the authoritative API objects, fields, and requirements for the API or APIs you will implement. |
 | 4 | [Forecast API Guidance](Forecast_API_Guidance.md) and/or [Concurrent Streams API Guidance](Concurrent_Streams_API_Guidance.md) | Apply the specifications with API-specific operational and implementation guidance. |
+| 5 | [Creative Readiness Guidance](Creative_Readiness_Guidance.md) (proposed) | Get creatives approved and ingested before the event using the Ad Management API, so the inventory the forecast describes can actually be served. |
 
 Implementers working with only one API can focus on that specification and its companion guide after reviewing the walkthrough and common conventions. Implementers using both APIs should review both sets of documents and the walkthrough's cross-API workflow.
 
@@ -78,6 +80,13 @@ This document provides guidance for future live-event discovery and pre-event pl
 - campaign planning before a live event
 
 The Forecast API supports planning ahead of an event. It should not be treated as the source for current live stream counts once live data is available; implementers should use the Concurrent Streams API for that purpose.
+
+### Creative Readiness Guidance (proposed)
+
+**File:** [`Creative_Readiness_Guidance.md`](Creative_Readiness_Guidance.md)
+**Specification:** [Ad Management API v1.1](https://github.com/InteractiveAdvertisingBureau/AdManagementAPI)
+
+This document, contributed for public comment, describes how the existing IAB Tech Lab Ad Management API fits the live-event timeline: when to submit creatives relative to the Forecast API's stability horizon, how to read audit status and corrections, why approval is not the same as SSAI ingestion, how bidding policy (restrictive vs. permissive) affects live breaks, and how creatives join to the bidstream (`Ad.id` = `crid`). It introduces no new API and marks the one extension it sketches as illustrative.
 
 ### Concurrent Streams API Guidance
 
