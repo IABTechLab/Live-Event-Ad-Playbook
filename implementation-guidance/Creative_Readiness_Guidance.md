@@ -111,6 +111,12 @@ Consumers should read the following from the Forecast API event record and use i
 
 Providers are encouraged to make the live-event creative specification machine-readable in a future Forecast API revision. This guide does not define those fields.
 
+### Looking ahead: a structured creative-requirements object
+
+What broadcasters' insertion stacks actually require of a creative goes well beyond `supportedmtype`: container and codec, resolution and aspect ratio, frame rate, video and audio bitrates, audio channels and loudness, maximum file size, accepted durations, VAST version, and whatever else a given stitcher enforces. Today those requirements travel in PDFs and onboarding emails, and a mismatch is discovered when the creative fails audit or, worse, fails to render in the break.
+
+A later iteration of the Forecast API (per event, in `inventoryconfig`) and of the Deal Sync API (per deal) could carry a structured creative-requirements object expressing these constraints. A DSP could then compare a buyer's assets against the seller's requirements at planning time and raise the mismatch to the buyer before submission, which is earlier and cheaper than a denial at audit and far cheaper than a rendering failure during the event. This guide is written with that destination in mind: today, read the supply partner's published creative specification; later, read it from the API. Defining the object is out of scope here and is raised in the Open Questions.
+
 ## Ad Object Recommendations for Live Video
 
 The Ad Management API `Ad` is an AdCOM 1.x `Ad` object. For live video the following attributes matter most. Which are required is the supply partner's business policy (Ad Management API: "Attributes Required").
@@ -289,3 +295,4 @@ The demand partner stores the corrected `cat` for `crt-30s-00417`, removes `crt-
 2. Should the Forecast API define creative constraints (`maxadduration`, accepted durations, VAST versions, lead time) in `inventoryconfig`, given that its own sample already carries `maxadduration`?
 3. Is an event association on the `Ad` (the `ext.leap` sketch above) useful enough to standardize, and does it belong in the Ad Management API or in the Creative Readiness proposal?
 4. For publishers that audit at their own level while an SSP operates the Ad Management API endpoint, how should the two audit outcomes be represented to the demand partner?
+5. For a later release: should the Forecast API (per event) and the Deal Sync API (per deal) carry a structured creative-requirements object (codec/container, resolution, aspect ratio, frame rate, video/audio bitrates, audio channels/loudness, file size, durations, VAST version), so that DSPs can detect buyer-asset mismatches at planning time rather than at audit or render? If so, should it be one AdCOM-aligned object shared by both APIs?
