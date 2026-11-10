@@ -3,7 +3,7 @@
 # Live Event Ad Playbook (LEAP)
 # Creative Readiness Implementation Guide (Ad Management API)
 
-> **Status: proposal for public comment.** This guide is contributed by The Trade Desk for review by LEAP Work Stream 2. It introduces no new API. It describes how the existing IAB Tech Lab [Ad Management API v1.1](https://github.com/InteractiveAdvertisingBureau/AdManagementAPI) fits into the live-event timeline that the Forecast API and Concurrent Streams API already describe, so that creatives are approved and ingested before the first ad break of a live event. Where this guide proposes something that the Ad Management API does not define today, it says so explicitly.
+> **Status: proposal for public comment.** This guide is contributed by The Trade Desk for review by LEAP Work Stream 2, as the companion to TTD's public comment on the Implementation Guidance v1.0 ([issue #21](https://github.com/IABTechLab/Live-Event-Ad-Playbook/issues/21)). It introduces no new API. It describes how the existing IAB Tech Lab [Ad Management API v1.1](https://github.com/InteractiveAdvertisingBureau/AdManagementAPI) fits into the live-event timeline that the Forecast API and Concurrent Streams API already describe, so that creatives are approved and ingested before the first ad break of a live event. Where this guide proposes something that the Ad Management API does not define today, it says so explicitly.
 
 ## Table of Contents
 
