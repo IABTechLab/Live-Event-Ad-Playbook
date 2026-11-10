@@ -5,6 +5,16 @@ This document tracks significant public-comment milestones, specification releas
 
 > **Release status:** Dates below distinguish public-comment openings and closings, specification finalization, and GitHub release tags. A public-comment release is not a final specification.
 
+## Proposed — Creative Readiness Guidance (public-comment contribution)
+
+**Status:** Proposal submitted during the Implementation Guidance v1.0 public-comment window (The Trade Desk; public comment filed as [issue #21](https://github.com/IABTechLab/Live-Event-Ad-Playbook/issues/21), PR [#20](https://github.com/IABTechLab/Live-Event-Ad-Playbook/pull/20))
+**Scope:**
+- New [`Creative_Readiness_Guidance.md`](implementation-guidance/Creative_Readiness_Guidance.md): how the existing IAB Tech Lab Ad Management API v1.1 fits the live-event timeline (submission at T-7, status confirmation at T-72 h / T-24 h / T-1 h, approval vs. ingestion, bidding policy, intermediaries, creative-to-bidstream join). No new API; one illustrative `ext` sketch, clearly marked.
+- Interactive walkthrough: a fourth track (plum) with two calls, **Creative submission (T-7)** and **Audit status before kickoff (T-24 h)**, a fourth node in the relationship map, an Ad Management API scope in the Shared Key panel, and a cumulative creative audit status table. All v1.0 steps are unchanged.
+- README and Multiple API Guidance updated to name the creative-readiness phase of the lifecycle.
+
+---
+
 ## October 28, 2026 — LEAP Implementation Guidance v1.0 
 
 **Status:** Public-comment release  

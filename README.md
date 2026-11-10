@@ -25,6 +25,7 @@ Implementation guidance is maintained in the [`implementation-guidance`](impleme
 | [`Forecast_API_Guidance.md`](implementation-guidance/Forecast_API_Guidance.md) | Provides implementation guidance specific to the Forecast API. |
 | [`Concurrent_Streams_API_Guidance.md`](implementation-guidance/Concurrent_Streams_API_Guidance.md) | Provides implementation guidance specific to the Concurrent Streams API. |
 | [`Multiple_API_Guidance.md`](implementation-guidance/Multiple_API_Guidance.md) | Explains how the Forecast API and Concurrent Streams API can be used together across the live event monetization lifecycle. |
+| [`Creative_Readiness_Guidance.md`](implementation-guidance/Creative_Readiness_Guidance.md) | **Proposed (public comment).** Explains how the existing IAB Tech Lab Ad Management API fits the live-event timeline so creatives are approved and ingested before the first break. |
 
 ## How the APIs Work Together
 
@@ -32,6 +33,7 @@ The Forecast API and Concurrent Streams API address different phases of live eve
 
 ```text
 Forecast API              -> pre-event planning
+Ad Management API         -> pre-event creative readiness (proposed guidance; existing IAB Tech Lab API)
 Concurrent Streams API    -> live-event adjustment
 ```
 
